@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField] bool canPlayerMove = true;
+    public bool canPlayerMove = true;
     [SerializeField] float speed = 5;
     [SerializeField] GameObject player;
-
-    enum Direction { Up, Down, Left, Right }
+    bool lookingRight = true;
+    enum Direction { UP, DOWN, LEFT, RIGHT }
     // Start is called before the first frame update
     void Start()
     {
@@ -18,22 +18,24 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (canPlayerMove)
         {
-            MoveCharacter(Direction.Up);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            MoveCharacter(Direction.Down);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            MoveCharacter(Direction.Right);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            MoveCharacter(Direction.Left);
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                MoveCharacter(Direction.UP);
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                MoveCharacter(Direction.DOWN);
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                MoveCharacter(Direction.RIGHT);
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                MoveCharacter(Direction.LEFT);
+            }
         }
       
     }
@@ -42,17 +44,29 @@ public class CharacterMovement : MonoBehaviour
     {
         switch(direction)
         {
-            case Direction.Up:
+            case Direction.UP:
                 player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + (speed * 0.01f), player.transform.position.z);
                 break;
-            case Direction.Down:
+            case Direction.DOWN:
                 player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - (speed * 0.01f), player.transform.position.z);
                 break;
-            case Direction.Left:
+            case Direction.LEFT:
                 player.transform.position = new Vector3(player.transform.position.x - (speed * 0.01f), player.transform.position.y, player.transform.position.z);
+                if(lookingRight)
+                {
+                    // Turn Sprite of character
+                
+                    lookingRight = false;
+                }
                 break;
-            case Direction.Right:
+            case Direction.RIGHT:
                 player.transform.position = new Vector3(player.transform.position.x + (speed * 0.01f), player.transform.position.y, player.transform.position.z);
+                if(!lookingRight)
+                {
+                    // Turn Sprite of character
+         
+                    lookingRight = true;
+                }
                 break;
             default:
                 break;
